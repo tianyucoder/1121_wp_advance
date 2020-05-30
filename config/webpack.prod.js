@@ -24,6 +24,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 //引入optimize-css-assets-webpack-plugin压缩css
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+//引入CleanWebpackPlugin，用于清空打包目录，防止无关文件干扰
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 // 定义nodejs环境变量：决定使用browserslist的哪个环境,不写就是production环境
 //process.env.NODE_ENV = 'development';
@@ -159,6 +161,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
       // 对输出的css文件进行重命名
 			filename: 'css/built.css',
-    })
+		}),
+		new CleanWebpackPlugin()
 	],
 };

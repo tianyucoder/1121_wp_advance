@@ -25,7 +25,7 @@ module.exports = {
 	mode: 'development', //开发模式
 	
 	//入口文件：告诉webpack从哪里作为入口构建依赖图
-	entry: './src/js/index.js',
+	entry: ['./src/js/index.js','./src/index.html'],
 
 	//输出：告诉webpack将加工之后的文件放在哪里
   output: {
@@ -99,6 +99,7 @@ module.exports = {
     contentBase: resolve(__dirname, 'build'),//本地打包文件的位置
     compress: true, //启用gzip压缩
     port: 3000, //端口号
-    open: true //自动打开浏览器
+		open: true, //自动打开浏览器
+		hot:true
   }
 };
