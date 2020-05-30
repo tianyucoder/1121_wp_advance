@@ -66,86 +66,90 @@ module.exports = {
 	//配置loader
   module: {
     rules: [
-      //每个对象为一个loader配置
-      {
-        // 处理css资源
-        test: /\.css$/,
-        use: [...commonCssLoader]
-			},
 			{
-        // 处理less资源
-        test: /\.less$/,
-        use: [...commonCssLoader, 'less-loader']
-			},
-			{
-        // 对js进行语法检查，在package.json中eslintConfig --> airbnb
-        test: /\.js$/,
-        exclude: /node_modules/,
-        // 优先执行
-        enforce: 'pre',
-        loader: 'eslint-loader',
-        options: {
-          fix: true//自动修复
-        }
-			},
-			/*
-        js兼容性处理：babel-loader @babel/core 
-          1. 基本js兼容性处理 --> @babel/preset-env
-            		问题：只能转换基本语法，如promise高级语法不能转换
-          2. 全部js兼容性处理 --> @babel/polyfill  
-            		问题：我只要解决部分兼容性问题，但是将所有兼容性代码全部引入，体积太大了~
-          3. 需要做兼容性处理的就做：按需加载  --> core-js
-      */
-			{
+				// 对js进行语法检查，在package.json中eslintConfig --> airbnb
 				test: /\.js$/,
 				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: [
-							[
-								'@babel/preset-env',
-								{
-									useBuiltIns: 'usage',  // 按需引入(需要使用polyfill)
-									corejs: { version: 3 }, // 解决warning警告
-									targets: { // 指定兼容性处理哪些浏览器
-										"chrome": "58",
-										"ie": "9",
-									}
-								}
-							]
-						],
-						cacheDirectory: true, // 开启babel缓存
-					}
+				// 优先执行
+				enforce: 'pre',
+				loader: 'eslint-loader',
+				options: {
+					fix: true//自动修复
 				}
 			},
-      {
-        // 处理图片资源
-        test: /\.(jpg|png|gif)$/,
-        loader: 'url-loader', //url-loader是对file-loader的上层封装
-        options: {
-          limit: 8 * 1024, //临界值为8KB，小于8KB的图片会被转为base64编码
-          name: '[hash:10].[ext]', //加工后图片的名字
-          // 关闭es6模块化
-          esModule: false, //防止html中<img>变为[object,Object]的问题
-					outputPath: 'imgs', //输出路径
-        }
-      },
-      {
-        // 处理html中<img>资源
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
-        // 处理其他资源(字体、音视频等等)
-        exclude: /\.(html|js|css|less|jpg|png|gif)/, //排除哪些文件
-        loader: 'file-loader',
-        options: {
-          name: '[hash:10].[ext]', //命名
-          outputPath: 'media' //输出路径
-        }
-      }
-    ]
+			{
+				oneOf:[
+					//每个对象为一个loader配置
+					{
+						// 处理css资源
+						test: /\.css$/,
+						use: [...commonCssLoader]
+					},
+					{
+						// 处理less资源
+						test: /\.less$/,
+						use: [...commonCssLoader, 'less-loader']
+					},
+					/*
+						js兼容性处理：babel-loader @babel/core 
+							1. 基本js兼容性处理 --> @babel/preset-env
+										问题：只能转换基本语法，如promise高级语法不能转换
+							2. 全部js兼容性处理 --> @babel/polyfill  
+										问题：我只要解决部分兼容性问题，但是将所有兼容性代码全部引入，体积太大了~
+							3. 需要做兼容性处理的就做：按需加载  --> core-js
+					*/
+					{
+						test: /\.js$/,
+						exclude: /node_modules/,
+						use: {
+							loader: 'babel-loader',
+							options: {
+								presets: [
+									[
+										'@babel/preset-env',
+										{
+											useBuiltIns: 'usage',  // 按需引入(需要使用polyfill)
+											corejs: { version: 3 }, // 解决warning警告
+											targets: { // 指定兼容性处理哪些浏览器
+												"chrome": "58",
+												"ie": "9",
+											}
+										}
+									]
+								],
+								cacheDirectory: true, // 开启babel缓存
+							}
+						}
+					},
+					{
+						// 处理图片资源
+						test: /\.(jpg|png|gif)$/,
+						loader: 'url-loader', //url-loader是对file-loader的上层封装
+						options: {
+							limit: 8 * 1024, //临界值为8KB，小于8KB的图片会被转为base64编码
+							name: '[hash:10].[ext]', //加工后图片的名字
+							// 关闭es6模块化
+							esModule: false, //防止html中<img>变为[object,Object]的问题
+							outputPath: 'imgs', //输出路径
+						}
+					},
+					{
+						// 处理html中<img>资源
+						test: /\.html$/,
+						loader: 'html-loader'
+					},
+					{
+						// 处理其他资源(字体、音视频等等)
+						exclude: /\.(html|js|css|less|jpg|png|gif)/, //排除哪些文件
+						loader: 'file-loader',
+						options: {
+							name: '[hash:10].[ext]', //命名
+							outputPath: 'media' //输出路径
+						}
+					}
+				]
+			}
+		]
 	},
 	
 	//配置plugins
@@ -164,4 +168,5 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin()
 	],
+	devtool:'source-map'
 };

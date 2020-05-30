@@ -101,5 +101,6 @@ module.exports = {
     port: 3000, //端口号
 		open: true, //自动打开浏览器
 		hot:true
-  }
+	},
+	devtool:'cheap-module-eval-source-map'
 };
