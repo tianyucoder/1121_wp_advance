@@ -1,2 +1,4 @@
-export const data = 'some data';
-export const data2 = 'some data2';
+const data = 'hello,atguigu'
+const msg = 'hello,1121'
+//统一暴露
+export {data,msg}
