@@ -37,7 +37,9 @@
   "webpack-cli": "^3.3.11",
   "webpack-dev-server": "^3.11.0"
  },
- "dependencies": {},
+ "dependencies": {
+  "express": "^4.17.1"
+ },
  "browserslist": {
   "development": [
    "last 1 chrome version",

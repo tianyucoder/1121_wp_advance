@@ -5,9 +5,9 @@ import { add, sub } from './module1';
 import { data, msg } from './module2';
 
 // eslint-disable-next-line
-console.log(add(1, 1))();
+console.log(add(1, -800));
 // eslint-disable-next-line
-console.log(sub(5, 1));
+console.log(sub(5, -800));
 // eslint-disable-next-line
 console.log(data, msg);
 

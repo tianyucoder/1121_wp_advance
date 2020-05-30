@@ -58,7 +58,7 @@ module.exports = {
 
 	//输出：告诉webpack将加工之后的文件放在哪里--开发环境不需要有输出
   output: {
-    filename: 'js/built.js', //输出文件名
+    filename: 'js/built.[contenthash:10].js', //输出文件名
 		path: resolve(__dirname, '../build'), //输出路径
 		publicPath:'/' //项目根路径，根据实际情况自行调整
 	},
@@ -164,7 +164,7 @@ module.exports = {
 		//提取css为单独文件
 		new MiniCssExtractPlugin({
       // 对输出的css文件进行重命名
-			filename: 'css/built.css',
+			filename: 'css/built.[contenthash:10].css',
 		}),
 		new CleanWebpackPlugin()
 	],
