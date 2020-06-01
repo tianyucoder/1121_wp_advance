@@ -1,4 +1,5 @@
 const data = 'hello,atguigu';
 const msg = 'hello,1121';
+const huikaichedelaoliu = '美女';
 // 统一暴露
-export { data, msg };
+export { data, msg, huikaichedelaoliu };

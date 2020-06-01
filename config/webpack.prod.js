@@ -51,7 +51,7 @@ module.exports = {
 		1.development是开发模式，webpack不压缩js，不压缩html
 		2.production是生产模式，webpack会帮助我们压缩js，压缩html
 	*/
-	mode: 'production', //开发模式
+	mode: 'production', //生产模式
 	
 	//入口文件：告诉webpack从哪里作为入口构建依赖图
 	entry: './src/js/index.js',
