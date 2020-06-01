@@ -26,6 +26,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 //引入CleanWebpackPlugin，用于清空打包目录，防止无关文件干扰
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+//引入WorkboxWebpackPlugin，用于开启PWA
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 // 定义nodejs环境变量：决定使用browserslist的哪个环境,不写就是production环境
 //process.env.NODE_ENV = 'development';
@@ -105,25 +107,33 @@ module.exports = {
 					{
 						test: /\.js$/,
 						exclude: /node_modules/,
-						use: {
-							loader: 'babel-loader',
-							options: {
-								presets: [
-									[
-										'@babel/preset-env',
-										{
-											useBuiltIns: 'usage',  // 按需引入(需要使用polyfill)
-											corejs: { version: 3 }, // 解决warning警告
-											targets: { // 指定兼容性处理哪些浏览器
-												"chrome": "58",
-												"ie": "9",
+						use: [
+							{
+								loader: 'babel-loader',
+								options: {
+									presets: [
+										[
+											'@babel/preset-env',
+											{
+												useBuiltIns: 'usage',  // 按需引入(需要使用polyfill)
+												corejs: { version: 3 }, // 解决warning警告
+												targets: { // 指定兼容性处理哪些浏览器
+													"chrome": "58",
+													"ie": "9",
+												}
 											}
-										}
-									]
-								],
-								cacheDirectory: true, // 开启babel缓存
+										]
+									],
+									cacheDirectory: true, // 开启babel缓存
+								}
+							},
+							{
+								loader: 'thread-loader',
+								options: {
+									workers: 10 // 线程10个
+								}
 							}
-						}
+						]
 					},
 					{
 						// 处理图片资源
@@ -170,7 +180,12 @@ module.exports = {
       // 对输出的css文件进行重命名
 			filename: 'css/built.[contenthash:10].css',
 		}),
-		new CleanWebpackPlugin()
+		new CleanWebpackPlugin(),
+		new WorkboxWebpackPlugin.GenerateSW({
+			clientsClaim: true, //删除旧的 serviceworker
+			skipWaiting: true //帮助serviceworker快速启动
+	 	})
+	 
 	],
 	//devtool:'source-map',
 	/*
