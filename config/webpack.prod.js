@@ -54,11 +54,15 @@ module.exports = {
 	mode: 'production', //生产模式
 	
 	//入口文件：告诉webpack从哪里作为入口构建依赖图
-	entry: './src/js/index.js',
+	entry: {
+		index:'./src/js/index.js',
+		module1:'./src/js/module1.js',
+		module2:'./src/js/module2.js'
+	},
 
 	//输出：告诉webpack将加工之后的文件放在哪里--开发环境不需要有输出
   output: {
-    filename: 'js/built.[contenthash:10].js', //输出文件名
+    filename: 'js/built.[name].[contenthash:10].js', //输出文件名
 		path: resolve(__dirname, '../build'), //输出路径
 		publicPath:'/' //项目根路径，根据实际情况自行调整
 	},
@@ -168,5 +172,14 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin()
 	],
-	devtool:'source-map'
+	//devtool:'source-map',
+	/*
+     1. 可以将node_modules中代码单独打包
+     2. 会自动分析多入口chunk中，有没有公共的文件。
+   */
+	optimization: {
+		splitChunks: {
+			chunks: 'all'
+		}
+	}
 };
